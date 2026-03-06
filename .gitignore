@@ -1,0 +1,15 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# Terraform lock
+.terraform.lock.hcl
+
+# Docker
+*.tar
+
+# System files
+.DS_Store
