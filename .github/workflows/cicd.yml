@@ -14,18 +14,14 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Show Files (debug)
-      run: ls -R
-
-    - name: Build Docker Image
-      run: |
-        cd app
-        docker build -t devops-lab-app .
-
-    - name: Install Kubectl
-      uses: azure/setup-kubectl@v3
-
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -f ./deployment.yml
-        kubectl apply -f ./service.yml
+    - name: Deploy to EC2 Kubernetes
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd ~/devops-virtual-lab
+          git pull origin main
+          kubectl apply -f k8s/deployment.yml
+          kubectl apply -f k8s/service.yml
